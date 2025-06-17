@@ -74,49 +74,53 @@ class Food {
     this.color = color;
   }
   generatePosition(snakeBody){
-    const gridSize = 20;
-    const maxIndex = 380 / gridSize;
-   
-    let isInideSnake;
-    let posX;
-    let posY;
+    const offset = 10;
+    const maxIndex = (390 - offset) / this.size;
+
+    let isInsideSnake;
+    let posX, posY;
+
     do {
-      posX = Math.floor(Math.random()*(maxIndex+1))*gridSize;
-      posY = Math.floor(Math.random()*(maxIndex+1))* gridSize;
+      const randX = Math.floor(Math.random() * (maxIndex + 1));
+      const randY = Math.floor(Math.random() * (maxIndex + 1));
+      
+      posX = randX * this.size + offset;
+      posY = randY * this.size + offset;
 
-      isInideSnake = snakeBody.some(segment => segment.x === posX && segment.y === posY);
+      isInsideSnake = snakeBody.some(segment => segment.x === posX && segment.y === posY);
 
-    } while (isInideSnake);
+    } while (isInsideSnake);
+
     this.x = posX;
     this.y = posY;
   }
 
-  draw(ctx){
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.size, this.size);
+
+  draw(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;   
+    ctx.fill();                 
+
   }
 }
 const snake = new Snake();
-const food = new Food(20, 40, 20, "blue");
+const food = new Food(30, 30, 20, "blue");
 
 document.addEventListener('keydown', (e) => {
   switch(e.key){
     case "ArrowUp": 
       snake.changeDirection(0,-1);
-      snake.grow();
       food.generatePosition(snake.body);
       break;
     case "ArrowDown": 
       snake.changeDirection(0,1);
-      snake.grow();
       break;
     case "ArrowLeft": 
       snake.changeDirection(-1,0);
-      snake.grow();
       break;
     case "ArrowRight": 
       snake.changeDirection(1,0);
-      snake.grow();
       break;
   }
 })
