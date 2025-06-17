@@ -36,7 +36,6 @@ class Snake {
     ){
       if(!isGameOver){
         isGameOver = true;
-        this.reset();
         cancelAnimationFrame(animationId);
         console.log('Game Over');
       }
@@ -49,7 +48,6 @@ class Snake {
         isGameOver = true;
         cancelAnimationFrame(animationId);
         console.log('Game Over (Self Collision)');
-        return;
       }
     }
     // collision with food object
@@ -59,9 +57,7 @@ class Snake {
     }
       
   }
-  reset(){
-    this.body = [{x:20, y:20}];
-  }
+
   draw(ctx){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -71,16 +67,15 @@ class Snake {
       ctx.fillStyle = "red";
       ctx.fill();  
     }
-               
-    
+                 
     
   }
 }
 
 class Food {
-  constructor(x, y, size, color){
-    this.x = x;
-    this.y = y;
+  x;
+  y;
+  constructor(size, color){
     this.size = size;
     this.color = color;
   }
@@ -115,40 +110,59 @@ class Food {
 
   }
 }
-const snake = new Snake();
-const food = new Food(30, 30, 20, "blue");
-
-document.addEventListener('keydown', (e) => {
-  switch(e.key){
-    case "ArrowUp": 
-      snake.changeDirection(0,-1);
-      break;
-    case "ArrowDown": 
-      snake.changeDirection(0,1);
-      break;
-    case "ArrowLeft": 
-      snake.changeDirection(-1,0);
-      break;
-    case "ArrowRight": 
-      snake.changeDirection(1,0);
-      break;
+class Game{
+  lastTime = 0;
+  speed = 100;
+  snake;
+  food;
+  constructor(canvas, ctx){
+    this.canvas = canvas;
+    this.ctx = ctx
+    this.gameLoop = this.gameLoop.bind(this);
+    document.addEventListener("keydown", (e) => this.changeDirection(e));
   }
-})
-
-let lastTime = 0;
-const speed = 100; // milliseconds per frame (e.g. 100ms = 10fps)
-
-function gameLoop(timestamp) {
-  if (timestamp - lastTime >= speed) {
-    snake.draw(ctx);
-    snake.move();
-    food.draw(ctx);
-    snake.checkCollision(food);
-    lastTime = timestamp;
+  start(){
+    this.snake = new Snake();
+    this.food = new Food(20, "blue");
+    this.food.generatePosition(this.snake.body);
+    requestAnimationFrame(this.gameLoop.bind(this));
   }
+  draw(){
+    this.snake.draw(this.ctx);
+    this.food.draw(this.ctx);
+  }
+  update(){
+    this.draw(this.ctx);
+    this.snake.move();
+    this.snake.checkCollision(this.food);
+  }
+  changeDirection(e){
+    switch(e.key){
+      case "ArrowUp": 
+        this.snake.changeDirection(0,-1);
+        break;
+      case "ArrowDown": 
+        this.snake.changeDirection(0,1);
+        break;
+      case "ArrowLeft": 
+        this.snake.changeDirection(-1,0);
+        break;
+      case "ArrowRight": 
+        this.snake.changeDirection(1,0);
+        break;
+    }
+  }
+  gameLoop(timestamp){
+    if (timestamp - this.lastTime >= this.speed) {
+      this.update();
+      this.lastTime = timestamp;
+    }
 
-  if (!isGameOver) {
-    animationId = requestAnimationFrame(gameLoop);
+    if (!isGameOver) {
+      animationId = requestAnimationFrame(this.gameLoop);
+    }
+    
   }
 }
-requestAnimationFrame(gameLoop);
+const game = new Game(canvas, ctx);
+game.start();
