@@ -4,7 +4,7 @@ let animationId;
 let isGameOver = false;
 class Snake {
   constructor(){
-    this.body = [{x: 0, y: 0}];
+    this.body = [{x: 10, y: 10}];
     this.direction = {x: 1, y: 0};
     this.speed = 20;
   }
@@ -31,8 +31,8 @@ class Snake {
   checkCollision(){
     const head = this.body[this.body.length - 1];
     if (
-      head.x < 0 || head.x + 20 > canvas.width ||
-      head.y < 0 || head.y + 20 > canvas.height
+      head.x < 0 || head.x + 10 > canvas.width ||
+      head.y < 0 || head.y + 10 > canvas.height
     ){
       if(!isGameOver){
         isGameOver = true;
@@ -43,7 +43,7 @@ class Snake {
     }
 
     for(let i=0; i<this.body.length-1;i++){
-    const segment = this.body[i];
+      const segment = this.body[i];
 
       if (head.x === segment.x && head.y === segment.y) {
         isGameOver = true;
@@ -59,10 +59,16 @@ class Snake {
   }
   draw(ctx){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "red";
+    
     for (let segment of this.body) {
-      ctx.fillRect(segment.x, segment.y, 20, 20);
+      ctx.beginPath();
+      ctx.arc(segment.x, segment.y, 10, 0, Math.PI * 2);
+      ctx.fillStyle = "red";
+      ctx.fill();  
     }
+               
+    
+    
   }
 }
 
@@ -112,9 +118,11 @@ document.addEventListener('keydown', (e) => {
     case "ArrowUp": 
       snake.changeDirection(0,-1);
       food.generatePosition(snake.body);
+      snake.grow();
       break;
     case "ArrowDown": 
       snake.changeDirection(0,1);
+      snake.grow();
       break;
     case "ArrowLeft": 
       snake.changeDirection(-1,0);
