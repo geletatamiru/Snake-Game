@@ -28,7 +28,7 @@ class Snake {
     this.direction.y = y;
   }
 
-  checkCollision(){
+  checkCollision(food){
     const head = this.body[this.body.length - 1];
     if (
       head.x < 0 || head.x + 10 > canvas.width ||
@@ -51,6 +51,11 @@ class Snake {
         console.log('Game Over (Self Collision)');
         return;
       }
+    }
+    // collision with food object
+    if(head.x === food.x && head.y === food.y){
+      this.grow();
+      food.generatePosition(this.body);
     }
       
   }
@@ -117,12 +122,9 @@ document.addEventListener('keydown', (e) => {
   switch(e.key){
     case "ArrowUp": 
       snake.changeDirection(0,-1);
-      food.generatePosition(snake.body);
-      snake.grow();
       break;
     case "ArrowDown": 
       snake.changeDirection(0,1);
-      snake.grow();
       break;
     case "ArrowLeft": 
       snake.changeDirection(-1,0);
@@ -141,7 +143,7 @@ function gameLoop(timestamp) {
     snake.draw(ctx);
     snake.move();
     food.draw(ctx);
-    snake.checkCollision();
+    snake.checkCollision(food);
     lastTime = timestamp;
   }
 
