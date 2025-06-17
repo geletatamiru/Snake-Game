@@ -1,6 +1,13 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 let score = document.querySelector('.score');
+const eatSound = new Audio('./sounds/food.mp3');
+const gameOverSound = new Audio('./sounds/gameover.mp3');
+const moveSound = new Audio('./sounds/move.mp3')
+const bgMusic = new Audio('./sounds/music.mp3');
+bgMusic.loop = true; 
+bgMusic.volume = 0.2; 
+
 class Snake {
   score = 0;
   constructor(){
@@ -26,6 +33,8 @@ class Snake {
   changeDirection(x, y){
     this.direction.x = x;
     this.direction.y = y;
+    moveSound.currentTime = 0;
+    moveSound.play();
   }
 
   checkCollision(food, isGameOver, animationId){
@@ -54,6 +63,8 @@ class Snake {
       food.generatePosition(this.body);
       this.score++;
       score.textContent = "Score: " + this.score;
+      eatSound.currentTime = 0;
+      eatSound.play();
     }
     return false;  
   }
@@ -125,6 +136,8 @@ class Game{
     document.querySelector('.restart-btn').addEventListener('click',() => this.reset());
   }
   start(){
+    bgMusic.currentTime = 0;
+    bgMusic.play();
     this.snake = new Snake();
     this.food = new Food(20, "blue");
     this.food.generatePosition(this.snake.body);
@@ -148,6 +161,9 @@ class Game{
   gameOver(){
     this.isGameOver = true;
     document.querySelector('.restart-btn').style.display = "block";
+    gameOverSound.currentTime = 0;
+    gameOverSound.play();
+    bgMusic.pause();
     console.log("Game Over");
   }
   reset(){
