@@ -163,6 +163,7 @@ class Game{
     document.querySelector('.restart-btn').addEventListener('click',() => this.reset());
   }
   start(){
+    this.addTouchListeners();
     bgMusic.currentTime = 0;
     bgMusic.play();
     this.snake = new Snake();
@@ -201,6 +202,36 @@ class Game{
     document.querySelector('.restart-btn').style.display = "none";
     this.start();
   }
+   addTouchListeners() {
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      this.canvas.addEventListener('touchstart', (e) => {
+        const touch = e.changedTouches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+      }, false);
+
+      this.canvas.addEventListener('touchend', (e) => {
+        const touch = e.changedTouches[0];
+        const touchEndX = touch.clientX;
+        const touchEndY = touch.clientY;
+
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        // Determine swipe direction
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+          // Horizontal swipe
+          if (deltaX > 30) this.snake.changeDirection(1, 0); // Swipe right
+          else if (deltaX < -30) this.snake.changeDirection(-1, 0); // Swipe left
+        } else {
+          // Vertical swipe
+          if (deltaY > 30) this.snake.changeDirection(0, 1); // Swipe down
+          else if (deltaY < -30) this.snake.changeDirection(0, -1); // Swipe up
+        }
+      }, false)
+    }
   changeDirection(e){
     switch(e.key){
       case "ArrowUp": 
