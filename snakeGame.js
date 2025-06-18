@@ -71,15 +71,41 @@ class Snake {
 
   draw(ctx){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+    let index = 0;
     for (let segment of this.body) {
+      let isHead =  index === this.body.length - 1;
       ctx.beginPath();
-      ctx.arc(segment.x, segment.y, 10, 0, Math.PI * 2);
-      ctx.fillStyle = "red";
+      const radius = isHead ? 10 : 8;
+      if (isHead) {
+        ctx.shadowColor = "lime";      
+        ctx.shadowBlur = 5;         
+        ctx.fillStyle = "red";
+      } else {
+        ctx.shadowBlur = 0;         
+         const hue = (index / this.body.length) * 360;
+        ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+      }
+      ctx.arc(segment.x, segment.y, radius, 0, Math.PI * 2);
       ctx.fill();  
-    }
-                 
-    
+      ctx.closePath();
+      if (isHead) {
+        const eyeOffsetX = 4;
+        const eyeOffsetY = 4;
+        ctx.fillStyle = "white";
+
+        ctx.beginPath();
+        ctx.arc(segment.x - eyeOffsetX, segment.y - eyeOffsetY, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(segment.x + eyeOffsetX, segment.y - eyeOffsetY, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+      }
+        index++;
+    }             
+     ctx.shadowBlur = 0;
   }
 }
 
@@ -96,7 +122,6 @@ class Food {
 
     let isInsideSnake;
     let posX, posY;
-
     do {
       const randX = Math.floor(Math.random() * (maxIndex + 1));
       const randY = Math.floor(Math.random() * (maxIndex + 1));
@@ -110,6 +135,8 @@ class Food {
 
     this.x = posX;
     this.y = posY;
+    let rand = Math.floor(Math.random()*361);
+    this.color = `hsl(${rand}, 100%, 50%)`;
   }
 
 
