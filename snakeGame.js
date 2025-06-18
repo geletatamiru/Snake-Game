@@ -7,6 +7,7 @@ const moveSound = new Audio('./sounds/move.mp3')
 const bgMusic = new Audio('./sounds/music.mp3');
 bgMusic.loop = true; 
 bgMusic.volume = 0.2; 
+let gameStarted = false;
 class Snake {
   score = 0;
   constructor(){
@@ -220,15 +221,13 @@ class Game{
         const deltaX = touchEndX - touchStartX;
         const deltaY = touchEndY - touchStartY;
 
-        // Determine swipe direction
+
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
-          // Horizontal swipe
-          if (deltaX > 30) this.snake.changeDirection(1, 0); // Swipe right
-          else if (deltaX < -30) this.snake.changeDirection(-1, 0); // Swipe left
+          if (deltaX > 30) this.snake.changeDirection(1, 0);
+          else if (deltaX < -30) this.snake.changeDirection(-1, 0); 
         } else {
-          // Vertical swipe
-          if (deltaY > 30) this.snake.changeDirection(0, 1); // Swipe down
-          else if (deltaY < -30) this.snake.changeDirection(0, -1); // Swipe up
+          if (deltaY > 30) this.snake.changeDirection(0, 1); 
+          else if (deltaY < -30) this.snake.changeDirection(0, -1);
         }
       }, false)
     }
@@ -260,9 +259,17 @@ class Game{
     
   }
 }
+const game = new Game(canvas, ctx);
 document.addEventListener('keydown', function startOnce(e) {
-  const game = new Game(canvas, ctx);
+  gameStarted = true;
   game.start();
   document.removeEventListener('keydown', startOnce); 
   document.querySelector('.press').style.display = "none";
+});
+
+canvas.addEventListener('touchstart', () => {
+  if (!gameStarted) {
+    gameStarted = true;
+    game.start(); 
+  }
 });
