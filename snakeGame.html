@@ -47,6 +47,22 @@
     font-size: 1rem;
     font-weight: bold;
   }
+  .score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    color: white;
+    font-family: monospace;
+  }
+  .high-score {
+     position: absolute;
+      top: 40px;
+      left: 10px;
+      font-size: 20px;
+      color: white;
+      font-family: monospace;
+  }
 </style>
 </head>
 <body>
@@ -54,6 +70,7 @@
     <h1>Snake Game</h1>
     <p class="press">Press any key to start the game</p>
     <h3 class="score">Score: 0</h3>
+    <h3 class="high-score">High-Score: 0</h3>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <button class="restart-btn">Restart</button>
   </div>

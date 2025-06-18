@@ -155,6 +155,7 @@ class Game{
   food;
   isGameOver = false;
   animationId;
+  highScore = "0"; 
   constructor(canvas, ctx){
     this.canvas = canvas;
     this.ctx = ctx
@@ -192,6 +193,10 @@ class Game{
     gameOverSound.play();
     bgMusic.pause();
     console.log("Game Over");
+    localStorage.setItem("high-score", this.snake.score.toString());
+    let newHighScore = localStorage.getItem("high-score");
+    this.highScore = this.highScore < newHighScore ? newHighScore : this.highScore;
+    document.querySelector('.high-score').textContent = "High-Score: " + this.highScore;
   }
   reset(){
     document.querySelector('.restart-btn').style.display = "none";
