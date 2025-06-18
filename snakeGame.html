@@ -10,7 +10,10 @@
     padding: 0;
     height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e1e1e, #2c2c2c);
+    /* background: linear-gradient(135deg, #1e1e1e, #2c2c2c); */
+    background: url("snake-bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
     color: #fff;
     display: flex;
     align-items: center;
@@ -24,12 +27,16 @@
   h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
-    color: #00ff88;
+    color: #ff0040;
     text-shadow: 1px 1px 10px #00ff88;
   }
 
   #gameCanvas {
-    background-color: #111;
+    /* background-color: #111; */
+    background: url("bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     border: 3px solid #00ff88;
     box-shadow: 0 0 15px #00ff88;
     border-radius: 5px;

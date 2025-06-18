@@ -7,7 +7,6 @@ const moveSound = new Audio('./sounds/move.mp3')
 const bgMusic = new Audio('./sounds/music.mp3');
 bgMusic.loop = true; 
 bgMusic.volume = 0.2; 
-
 class Snake {
   score = 0;
   constructor(){
