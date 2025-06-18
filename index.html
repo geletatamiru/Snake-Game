@@ -68,18 +68,29 @@
       color: white;
       font-family: monospace;
   }
+  #controls button {
+    font-size: 24px;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 10px;
+  }
 </style>
 </head>
 <body>
   <div class="container">
     <h1>Snake Game</h1>
-    <p class="press">Press any key to start the game</p>
+    <p class="press">Press any key or touch the Screen to start the game</p>
     <h3 class="score">Score: 0</h3>
     <h3 class="high-score">High-Score: 0</h3>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
     <button class="restart-btn">Restart</button>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div id="controls" style="text-align: center; margin-top: 10px;">
+      <button onclick="game.handleMobileInput('up')">⬆️</button><br>
+      <button onclick="game.handleMobileInput('left')">⬅️</button>
+      <button onclick="game.handleMobileInput('down')">⬇️</button>
+      <button onclick="game.handleMobileInput('right')">➡️</button>
+    </div>
   </div>
-  
   <script src="snakeGame.js"></script>
 </body>
 </html>

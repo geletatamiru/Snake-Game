@@ -160,16 +160,15 @@ class Game{
     this.canvas = canvas;
     this.ctx = ctx
     this.gameLoop = this.gameLoop.bind(this);
-    document.addEventListener("keydown", (e) => this.changeDirection(e));
     document.querySelector('.restart-btn').addEventListener('click',() => this.reset());
   }
   start(){
-    this.addTouchListeners();
     bgMusic.currentTime = 0;
     bgMusic.play();
     this.snake = new Snake();
     this.food = new Food(20, "blue");
     this.food.generatePosition(this.snake.body);
+    document.addEventListener("keydown", (e) => this.changeDirection(e));
     this.snake.score = 0;
     document.querySelector(".score").textContent = "Score: 0";
     this.isGameOver = false;
@@ -203,34 +202,22 @@ class Game{
     document.querySelector('.restart-btn').style.display = "none";
     this.start();
   }
-   addTouchListeners() {
-      let touchStartX = 0;
-      let touchStartY = 0;
-
-      this.canvas.addEventListener('touchstart', (e) => {
-        const touch = e.changedTouches[0];
-        touchStartX = touch.clientX;
-        touchStartY = touch.clientY;
-      }, false);
-
-      this.canvas.addEventListener('touchend', (e) => {
-        const touch = e.changedTouches[0];
-        const touchEndX = touch.clientX;
-        const touchEndY = touch.clientY;
-
-        const deltaX = touchEndX - touchStartX;
-        const deltaY = touchEndY - touchStartY;
-
-
-        if (Math.abs(deltaX) > Math.abs(deltaY)) {
-          if (deltaX > 30) this.snake.changeDirection(1, 0);
-          else if (deltaX < -30) this.snake.changeDirection(-1, 0); 
-        } else {
-          if (deltaY > 30) this.snake.changeDirection(0, 1); 
-          else if (deltaY < -30) this.snake.changeDirection(0, -1);
-        }
-      }, false)
+  handleMobileInput(direction) {
+    switch (direction) {
+      case 'up':
+        this.snake.changeDirection(0, -1);
+        break;
+      case 'down':
+        this.snake.changeDirection(0, 1);
+        break;
+      case 'left':
+        this.snake.changeDirection(-1, 0);
+        break;
+      case 'right':
+        this.snake.changeDirection(1, 0);
+        break;
     }
+  }
   changeDirection(e){
     switch(e.key){
       case "ArrowUp": 
@@ -261,15 +248,16 @@ class Game{
 }
 const game = new Game(canvas, ctx);
 document.addEventListener('keydown', function startOnce(e) {
-  gameStarted = true;
-  game.start();
-  document.removeEventListener('keydown', startOnce); 
-  document.querySelector('.press').style.display = "none";
+  if(!gameStarted){
+    game.start();
+    document.removeEventListener('keydown', startOnce); 
+    document.querySelector('.press').style.display = "none";
+  }
 });
-
 canvas.addEventListener('touchstart', () => {
   if (!gameStarted) {
     gameStarted = true;
-    game.start(); 
+    game.start();
   }
 });
+
