@@ -25,48 +25,46 @@
 
   h1 {
     font-size: 2.5rem;
-    margin-bottom: 20px;
     color: #ff0040;
     text-shadow: 1px 1px 10px #00ff88;
+    margin: 0;
   }
-
+  .press {
+    margin: 0;
+  }
   #gameCanvas {
     background: url("bg.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     border: 3px solid #00ff88;
-    box-shadow: 0 0 15px #00ff88;
     border-radius: 5px;
   }
   .restart-btn {
     display: none;
     border: 3px solid #00ff88;
-    background-color: #111;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    background-color: transparent;
     color: white;
     border-radius: 5px;
     cursor: pointer;
-    margin: auto;
     width: 100px;
     height: 50px;
     font-size: 1rem;
     font-weight: bold;
+
   }
-  .score {
-    position: absolute;
-    top: 10px;
-    left: 10px;
+  .score-container {
+    display: flex;
+    justify-content: space-between;
     font-size: 20px;
     color: white;
     font-family: monospace;
   }
-  .high-score {
-     position: absolute;
-      top: 40px;
-      left: 10px;
-      font-size: 20px;
-      color: white;
-      font-family: monospace;
+  .score, .high-score {
+    margin: 0;
   }
   #controls button {
     font-size: 24px;
@@ -80,11 +78,13 @@
   <div class="container">
     <h1>Snake Game</h1>
     <p class="press">Press any key or touch the Screen to start the game</p>
-    <h3 class="score">Score: 0</h3>
-    <h3 class="high-score">High-Score: 0</h3>
+    <div class="score-container">
+      <h3 class="score">Score: 0</h3>
+      <h3 class="high-score">High-Score: 0</h3>
+    </div>
     <button class="restart-btn">Restart</button>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <div id="controls" style="text-align: center; margin-top: 10px;">
+    <div id="controls" style="text-align: center;">
       <button onclick="game.handleMobileInput('up')">⬆️</button><br>
       <button onclick="game.handleMobileInput('left')">⬅️</button>
       <button onclick="game.handleMobileInput('down')">⬇️</button>
