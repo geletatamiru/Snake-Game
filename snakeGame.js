@@ -118,7 +118,7 @@ class Food {
   }
   generatePosition(snakeBody){
     const offset = 10;
-    const maxIndex = (390 - offset) / this.size;
+    const maxIndex = (370 - offset) / this.size;
 
     let isInsideSnake;
     let posX, posY;
@@ -249,14 +249,16 @@ class Game{
 const game = new Game(canvas, ctx);
 document.addEventListener('keydown', function startOnce(e) {
   if(!gameStarted){
+    document.querySelector('.press').style.display = "none";
     game.start();
     document.removeEventListener('keydown', startOnce); 
-    document.querySelector('.press').style.display = "none";
+ 
   }
 });
 canvas.addEventListener('touchstart', () => {
   if (!gameStarted) {
     gameStarted = true;
+    document.querySelector('.press').style.display = "none";
     game.start();
   }
 });
