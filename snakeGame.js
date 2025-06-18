@@ -20,8 +20,8 @@ class Snake {
     const newX = head.x + this.direction.x * this.speed;
     const newY = head.y + this.direction.y * this.speed;
 
-    this.body.shift(); // remove tail
-    this.body.push({x: newX, y: newY}); // add new head
+    this.body.shift(); 
+    this.body.push({x: newX, y: newY}); 
   }
 
   grow(){
