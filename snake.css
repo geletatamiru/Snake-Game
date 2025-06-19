@@ -31,9 +31,9 @@ h1 {
   background-position: center;
   border: 3px solid #00ff88;
   border-radius: 5px;
-  width: 90vw;         /* 90% of viewport width */
-  max-width: 500px;    /* Limit size on large screens */
-  height: auto;        /* Maintain aspect ratio */
+  width: 90vw;         
+  max-width: 500px;    
+  height: auto;        
 }
 .restart-btn {
   display: none;
@@ -77,6 +77,9 @@ h1 {
 }
 
 @media (max-width: 767px) {
+  body {
+    height: 100vh;
+  }
   #gameCanvas {
     width: 95vw;
   }
