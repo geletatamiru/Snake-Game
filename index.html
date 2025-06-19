@@ -3,76 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="snake.css">
   <title>Document</title>
-  <style>
-  body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: url("snake-bg.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .container {
-    text-align: center;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    color: #ff0040;
-    text-shadow: 1px 1px 10px #00ff88;
-    margin: 0;
-  }
-  .press {
-    margin: 0;
-  }
-  #gameCanvas {
-    background: url("bg.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    border: 3px solid #00ff88;
-    border-radius: 5px;
-  }
-  .restart-btn {
-    display: none;
-    border: 3px solid #00ff88;
-    position: absolute;
-    top: 45%;
-    left: 45%;
-    background-color: transparent;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100px;
-    height: 50px;
-    font-size: 1rem;
-    font-weight: bold;
-
-  }
-  .score-container {
-    display: flex;
-    justify-content: space-between;
-    font-size: 20px;
-    color: white;
-    font-family: monospace;
-  }
-  .score, .high-score {
-    margin: 0;
-  }
-  #controls button {
-    font-size: 24px;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 10px;
-  }
-</style>
 </head>
 <body>
   <div class="container">
@@ -83,7 +15,7 @@
       <h3 class="high-score">High-Score: 0</h3>
     </div>
     <button class="restart-btn">Restart</button>
-    <canvas id="gameCanvas" width="340" height="340"></canvas>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="controls" style="text-align: center;">
       <button onclick="game.handleMobileInput('up')">⬆️</button><br>
       <button onclick="game.handleMobileInput('left')">⬅️</button>

@@ -118,7 +118,7 @@ class Food {
   }
   generatePosition(snakeBody){
     const offset = 10;
-    const maxIndex = (330 - offset) / this.size;
+    const maxIndex = (canvas.width - offset-10) / this.size;
 
     let isInsideSnake;
     let posX, posY;
