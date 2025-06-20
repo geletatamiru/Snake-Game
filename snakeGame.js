@@ -13,13 +13,14 @@ class Snake {
   constructor(){
     this.body = [{x: 10, y: 10}];
     this.direction = {x: 1, y: 0};
-    this.speed = 20;
+    this.gridSize = 20;
+    this.radius = 10;
   }
 
   move(){
     const head = this.body[this.body.length - 1];
-    const newX = head.x + this.direction.x * this.speed;
-    const newY = head.y + this.direction.y * this.speed;
+    const newX = head.x + this.direction.x * (this.gridSize - 10);
+    const newY = head.y + this.direction.y * (this.gridSize - 10);
 
     this.body.shift(); 
     this.body.push({x: newX, y: newY}); 
@@ -40,8 +41,8 @@ class Snake {
   checkCollision(food, isGameOver, animationId){
     const head = this.body[this.body.length - 1];
     if (
-      head.x < 0 || head.x + 10 > canvas.width ||
-      head.y < 0 || head.y + 10 > canvas.height
+      head.x < this.radius || head.x + 10 > canvas.width ||
+      head.y < this.radius || head.y + 10 > canvas.height
     ){
       if(!isGameOver){
         cancelAnimationFrame(animationId);
@@ -65,6 +66,7 @@ class Snake {
       score.textContent = "Score: " + this.score;
       eatSound.currentTime = 0;
       eatSound.play();
+      return "ateFood"; 
     }
     return false;  
   }
@@ -75,7 +77,7 @@ class Snake {
     for (let segment of this.body) {
       let isHead =  index === this.body.length - 1;
       ctx.beginPath();
-      const radius = isHead ? 10 : 8;
+      const radius = isHead ? this.radius : 8;
       if (isHead) {
         ctx.shadowColor = "lime";      
         ctx.shadowBlur = 5;         
@@ -145,26 +147,29 @@ class Food {
     ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
     ctx.fillStyle = this.color;   
     ctx.fill();                 
-
+    ctx.closePath();
   }
 }
 class Game{
   lastTime = 0;
-  speed = 100;
   snake;
   food;
   isGameOver = false;
   animationId;
   highScore = "0"; 
-  constructor(canvas, ctx){
+  level = 0;
+  constructor(canvas, ctx,delay){
     this.canvas = canvas;
     this.ctx = ctx
+    this.delay = delay;
     this.gameLoop = this.gameLoop.bind(this);
     document.querySelector('.restart-btn').addEventListener('click',() => this.reset());
   }
   start(){
     bgMusic.currentTime = 0;
     bgMusic.play();
+    this.level = 0;
+    this.speed = 100;
     this.snake = new Snake();
     this.food = new Food(20, "blue");
     this.food.generatePosition(this.snake.body);
@@ -181,9 +186,18 @@ class Game{
   update(){
     this.draw(this.ctx);
     this.snake.move();
+    ctx.fillStyle = 'white'; 
+    ctx.font = '16px Arial';
+    ctx.fillText(`Level: ${this.level}`, 10, 20);
     let isCollided = this.snake.checkCollision(this.food, this.isGameOver, this.animationId);
-    if(isCollided){
+    if(isCollided === true){
       this.gameOver();
+    }
+    if(isCollided === "ateFood"){
+      if (this.snake.score % 5 === 0 && this.delay > 50) {
+        this.delay -= 10; 
+        this.level++;
+      }
     }
   }
   gameOver(){
@@ -235,7 +249,7 @@ class Game{
     }
   }
   gameLoop(timestamp){
-    if (timestamp - this.lastTime >= this.speed) {
+    if (timestamp - this.lastTime >= this.delay) {
       this.update();
       this.lastTime = timestamp;
     }
@@ -246,7 +260,7 @@ class Game{
     
   }
 }
-const game = new Game(canvas, ctx);
+const game = new Game(canvas, ctx, 100);
 document.addEventListener('keydown', function startOnce(e) {
   if(!gameStarted){
     document.querySelector('.press').style.display = "none";
