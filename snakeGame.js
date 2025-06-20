@@ -195,7 +195,7 @@ class Game{
     }
     if(isCollided === "ateFood"){
       if (this.snake.score % 5 === 0 && this.delay > 50) {
-        this.delay -= 10; 
+        this.delay -= 5; 
         this.level++;
       }
     }
